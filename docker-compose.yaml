@@ -1,0 +1,85 @@
+version: "3.8"
+
+services:
+  # 웹 서비스
+  fetch:
+    build:
+      context: .
+      dockerfile: src/fetch/Dockerfile
+    image: mcp/fetch
+    ports:
+      - "20001:3000"
+    volumes:
+      - ./web:/usr/share/nginx/html
+      - common_memory:/shared_data
+    restart: always
+
+  # 파일시스템 서비스
+  filesystem:
+    build:
+      context: .
+      dockerfile: src/filesystem/Dockerfile
+    image: mcp/filesystem
+    volumes:
+      - ./data:/app/data
+      - common_memory:/shared_data
+    ports:
+      - "20002:3000"
+    environment:
+      - FILESYSTEM_DATA_DIR=/app/data
+    restart: always
+
+  # 메모리 서비스
+  memory:
+    build:
+      context: .
+      dockerfile: src/memory/Dockerfile
+    image: mcp/memory
+    volumes:
+      - common_memory:/app/data
+    ports:
+      - "20003:3000"
+    environment:
+      - NODE_ENV=production
+      - MCP_MEMORY_DIR=/app/data
+    restart: always
+
+  # 웹 브라우저 자동화 서비스
+  puppeteer:
+    build:
+      context: .
+      dockerfile: src/puppeteer/Dockerfile
+    image: mcp/puppeteer
+    volumes:
+      - common_memory:/shared_data
+    ports:
+      - "20004:3000"
+    restart: always
+
+  # 순차적 사고 서비스
+  sequentialthinking:
+    build:
+      context: .
+      dockerfile: src/sequentialthinking/Dockerfile
+    image: mcp/sequentialthinking
+    volumes:
+      - common_memory:/shared_data
+    ports:
+      - "20005:3000"
+    restart: always
+
+  # 시간 서비스
+  time:
+    build:
+      context: .
+      dockerfile: src/time/Dockerfile
+    image: mcp/time
+    volumes:
+      - common_memory:/shared_data
+    ports:
+      - "20006:3000"
+    restart: always
+
+volumes:
+  common_memory:
+    name: mcp_common_memory

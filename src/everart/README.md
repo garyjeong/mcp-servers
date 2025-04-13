@@ -1,15 +1,15 @@
-# EverArt MCP Server
+# EverArt MCP 서버
 
-Image generation server for Claude Desktop using EverArt's API.
+Claude Desktop에서 EverArt API를 사용하는 이미지 생성 서버입니다.
 
-## Install
+## 설치
 ```bash
 npm install
 export EVERART_API_KEY=your_key_here
 ```
 
-## Config
-Add to Claude Desktop config:
+## 구성
+Claude Desktop 구성에 추가하세요:
 
 ### Docker
 ```json
@@ -42,55 +42,55 @@ Add to Claude Desktop config:
 }
 ```
 
-## Tools
+## 도구
 
 ### generate_image
-Generates images with multiple model options. Opens result in browser and returns URL.
+여러 모델 옵션으로 이미지를 생성합니다. 결과를 브라우저에서 열고 URL을 반환합니다.
 
-Parameters:
+매개변수:
 ```typescript
 {
-  prompt: string,       // Image description
-  model?: string,       // Model ID (default: "207910310772879360")
-  image_count?: number  // Number of images (default: 1)
+  prompt: string,       // 이미지 설명
+  model?: string,       // 모델 ID (기본값: "207910310772879360")
+  image_count?: number  // 이미지 수 (기본값: 1)
 }
 ```
 
-Models:
-- 5000: FLUX1.1 (standard)
+모델:
+- 5000: FLUX1.1 (표준)
 - 9000: FLUX1.1-ultra
 - 6000: SD3.5
 - 7000: Recraft-Real
 - 8000: Recraft-Vector
 
-All images generated at 1024x1024.
+모든 이미지는 1024x1024 해상도로 생성됩니다.
 
-Sample usage:
+사용 예:
 ```javascript
 const result = await client.callTool({
   name: "generate_image",
   arguments: {
-    prompt: "A cat sitting elegantly",
+    prompt: "우아하게 앉아있는 고양이",
     model: "7000",
     image_count: 1
   }
 });
 ```
 
-Response format:
+응답 형식:
 ```
-Image generated successfully!
-The image has been opened in your default browser.
+이미지가 성공적으로 생성되었습니다!
+이미지가 기본 브라우저에서 열렸습니다.
 
-Generation details:
-- Model: 7000
-- Prompt: "A cat sitting elegantly"
-- Image URL: https://storage.googleapis.com/...
+생성 세부 정보:
+- 모델: 7000
+- 프롬프트: "우아하게 앉아있는 고양이"
+- 이미지 URL: https://storage.googleapis.com/...
 
-You can also click the URL above to view the image again.
+위의 URL을 클릭하여 이미지를 다시 볼 수도 있습니다.
 ```
 
-## Building w/ Docker
+## Docker로 빌드하기
 
 ```sh
 docker build -t mcp/everart -f src/everart/Dockerfile . 

@@ -1,30 +1,26 @@
 {
-  "name": "@modelcontextprotocol/server-google-maps",
-  "version": "0.6.2",
-  "description": "MCP server for using the Google Maps API",
-  "license": "MIT",
-  "author": "Anthropic, PBC (https://anthropic.com)",
-  "homepage": "https://modelcontextprotocol.io",
-  "bugs": "https://github.com/modelcontextprotocol/servers/issues",
-  "type": "module",
-  "bin": {
-    "mcp-server-google-maps": "dist/index.js"
-  },
-  "files": [
-    "dist"
-  ],
+  "name": "@modelcontextprotocol/mcp-google-maps",
+  "version": "1.0.0",
+  "description": "MCP Google Maps server",
+  "type": "commonjs",
+  "main": "dist/src/google-maps/index.js",
   "scripts": {
-    "build": "tsc && shx chmod +x dist/*.js",
-    "prepare": "npm run build",
-    "watch": "tsc --watch"
+    "build": "tsc",
+    "start": "node dist/src/google-maps/index.js"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "1.0.1",
+    "node-fetch": "^3.3.2",
     "@types/node-fetch": "^2.6.12",
-    "node-fetch": "^3.3.2"
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2"
   },
   "devDependencies": {
-    "shx": "^0.3.4",
-    "typescript": "^5.6.2"
-  }
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.0",
+    "typescript": "^5.3.2"
+  },
+  "author": "",
+  "license": "MIT"
 }

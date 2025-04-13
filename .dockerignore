@@ -1,0 +1,79 @@
+# 버전 관리 시스템 관련 파일
+.git
+.gitattributes
+.gitignore
+.github
+
+# 로그 파일
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# 임시 파일
+tmp
+temp
+*.tmp
+*.temp
+
+# 의존성 디렉토리
+node_modules
+.pnp
+.pnp.js
+.venv
+__pycache__
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# 환경 설정 파일
+.env
+.env.*
+!.env.example
+
+# 개인 설정 파일
+claude_desktop_config.json
+
+# 캐시 파일
+.cache
+.eslintcache
+.npm
+.rpt2_cache/
+
+# 빌드 결과물
+*.min.js
+*.min.css
+*.map
+
+# 시스템 파일
+.DS_Store
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# IDE 관련 파일
+.idea
+.vscode
+*.swp
+*.swo
+*.sublime*
+.project
+.classpath
+.settings/ 

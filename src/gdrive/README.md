@@ -1,67 +1,67 @@
-# Google Drive server
+# Google Drive 서버
 
-This MCP server integrates with Google Drive to allow listing, reading, and searching over files.
+이 MCP 서버는 Google Drive와 통합되어 파일 목록 조회, 읽기 및 검색 기능을 제공합니다.
 
-## Components
+## 구성 요소
 
-### Tools
+### 도구
 
 - **search**
-  - Search for files in Google Drive
-  - Input: `query` (string): Search query
-  - Returns file names and MIME types of matching files
+  - Google Drive에서 파일 검색
+  - 입력: `query` (문자열): 검색 쿼리
+  - 일치하는 파일의 파일 이름 및 MIME 유형 반환
 
-### Resources
+### 리소스
 
-The server provides access to Google Drive files:
+이 서버는 Google Drive 파일에 대한 접근을 제공합니다:
 
-- **Files** (`gdrive:///<file_id>`)
-  - Supports all file types
-  - Google Workspace files are automatically exported:
-    - Docs → Markdown
-    - Sheets → CSV
-    - Presentations → Plain text
-    - Drawings → PNG
-  - Other files are provided in their native format
+- **파일** (`gdrive:///<file_id>`)
+  - 모든 파일 유형 지원
+  - Google Workspace 파일은 자동으로 내보내기됩니다:
+    - 문서 → 마크다운
+    - 스프레드시트 → CSV
+    - 프레젠테이션 → 일반 텍스트
+    - 그림 → PNG
+  - 다른 파일은 원래 형식으로 제공됩니다
 
-## Getting started
+## 시작하기
 
-1. [Create a new Google Cloud project](https://console.cloud.google.com/projectcreate)
-2. [Enable the Google Drive API](https://console.cloud.google.com/workspace-api/products)
-3. [Configure an OAuth consent screen](https://console.cloud.google.com/apis/credentials/consent) ("internal" is fine for testing)
-4. Add OAuth scope `https://www.googleapis.com/auth/drive.readonly`
-5. [Create an OAuth Client ID](https://console.cloud.google.com/apis/credentials/oauthclient) for application type "Desktop App"
-6. Download the JSON file of your client's OAuth keys
-7. Rename the key file to `gcp-oauth.keys.json` and place into the root of this repo (i.e. `servers/gcp-oauth.keys.json`)
+1. [새 Google Cloud 프로젝트 생성](https://console.cloud.google.com/projectcreate)
+2. [Google Drive API 활성화](https://console.cloud.google.com/workspace-api/products)
+3. [OAuth 동의 화면 구성](https://console.cloud.google.com/apis/credentials/consent) (테스트용으로는 "내부"가 적합)
+4. OAuth 범위 `https://www.googleapis.com/auth/drive.readonly` 추가
+5. 애플리케이션 유형 "Desktop App"으로 [OAuth 클라이언트 ID 생성](https://console.cloud.google.com/apis/credentials/oauthclient)
+6. 클라이언트의 OAuth 키가 포함된 JSON 파일 다운로드
+7. 키 파일 이름을 `gcp-oauth.keys.json`으로 변경하고 이 저장소의 루트에 배치 (예: `servers/gcp-oauth.keys.json`)
 
-Make sure to build the server with either `npm run build` or `npm run watch`.
+`npm run build` 또는 `npm run watch`로 서버를 빌드하세요.
 
-### Authentication
+### 인증
 
-To authenticate and save credentials:
+인증 및 자격 증명 저장 방법:
 
-1. Run the server with the `auth` argument: `node ./dist auth`
-2. This will open an authentication flow in your system browser
-3. Complete the authentication process
-4. Credentials will be saved in the root of this repo (i.e. `servers/.gdrive-server-credentials.json`)
+1. `auth` 인수와 함께 서버 실행: `node ./dist auth`
+2. 시스템 브라우저에서 인증 플로우가 열립니다
+3. 인증 과정을 완료하세요
+4. 자격 증명이 이 저장소의 루트에 저장됩니다 (예: `servers/.gdrive-server-credentials.json`)
 
-### Usage with Desktop App
+### 데스크톱 앱에서 사용
 
-To integrate this server with the desktop app, add the following to your app's server configuration:
+이 서버를 데스크톱 앱과 통합하려면 앱의 서버 구성에 다음을 추가하세요:
 
 #### Docker
 
-Authentication:
+인증:
 
-Assuming you have completed setting up the OAuth application on Google Cloud, you can now auth the server with the following command, replacing `/path/to/gcp-oauth.keys.json` with the path to your OAuth keys file:
+Google Cloud에서 OAuth 애플리케이션 설정을 완료했다고 가정하면, 이제 다음 명령으로 서버를 인증할 수 있습니다. `/path/to/gcp-oauth.keys.json`을 OAuth 키 파일 경로로 바꾸세요:
 
 ```bash
 docker run -i --rm --mount type=bind,source=/path/to/gcp-oauth.keys.json,target=/gcp-oauth.keys.json -v mcp-gdrive:/gdrive-server -e GDRIVE_OAUTH_PATH=/gcp-oauth.keys.json -e "GDRIVE_CREDENTIALS_PATH=/gdrive-server/credentials.json" -p 3000:3000 mcp/gdrive auth
 ```
 
-The command will print the URL to open in your browser. Open this URL in your browser and complete the authentication process. The credentials will be saved in the `mcp-gdrive` volume.
+이 명령은 브라우저에서 열 URL을 출력합니다. 브라우저에서 이 URL을 열고 인증 과정을 완료하세요. 자격 증명은 `mcp-gdrive` 볼륨에 저장됩니다.
 
-Once authenticated, you can use the server in your app's server configuration:
+인증이 완료되면 앱의 서버 구성에서 서버를 사용할 수 있습니다:
 
 ```json
 {
@@ -90,6 +90,6 @@ Once authenticated, you can use the server in your app's server configuration:
 }
 ```
 
-## License
+## 라이선스
 
-This MCP server is licensed under the MIT License. This means you are free to use, modify, and distribute the software, subject to the terms and conditions of the MIT License. For more details, please see the LICENSE file in the project repository.
+이 MCP 서버는 MIT 라이선스 하에 제공됩니다. 이는 MIT 라이선스의 약관 및 조건에 따라 소프트웨어를 자유롭게 사용, 수정 및 배포할 수 있음을 의미합니다. 자세한 내용은 프로젝트 저장소의 LICENSE 파일을 참조하세요.

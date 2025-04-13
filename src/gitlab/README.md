@@ -1,113 +1,113 @@
-# GitLab MCP Server
+# GitLab MCP 서버
 
-MCP Server for the GitLab API, enabling project management, file operations, and more.
+GitLab API를 위한 MCP 서버로, 프로젝트 관리, 파일 작업 등을 가능하게 합니다.
 
-### Features
+### 특징
 
-- **Automatic Branch Creation**: When creating/updating files or pushing changes, branches are automatically created if they don't exist
-- **Comprehensive Error Handling**: Clear error messages for common issues
-- **Git History Preservation**: Operations maintain proper Git history without force pushing
-- **Batch Operations**: Support for both single-file and multi-file operations
+- **자동 브랜치 생성**: 파일 생성/업데이트 또는 변경 사항 푸시 시, 브랜치가 존재하지 않으면 자동으로 생성됩니다
+- **포괄적인 오류 처리**: 일반적인 문제에 대한 명확한 오류 메시지 제공
+- **Git 히스토리 보존**: 강제 푸시 없이 적절한 Git 히스토리를 유지하는 작업
+- **배치 작업**: 단일 파일 및 다중 파일 작업 모두 지원
 
 
-## Tools
+## 도구
 
 1. `create_or_update_file`
-   - Create or update a single file in a project
-   - Inputs:
-     - `project_id` (string): Project ID or URL-encoded path
-     - `file_path` (string): Path where to create/update the file
-     - `content` (string): Content of the file
-     - `commit_message` (string): Commit message
-     - `branch` (string): Branch to create/update the file in
-     - `previous_path` (optional string): Path of the file to move/rename
-   - Returns: File content and commit details
+   - 프로젝트에서 단일 파일 생성 또는 업데이트
+   - 입력:
+     - `project_id` (문자열): 프로젝트 ID 또는 URL 인코딩된 경로
+     - `file_path` (문자열): 파일을 생성/업데이트할 경로
+     - `content` (문자열): 파일 내용
+     - `commit_message` (문자열): 커밋 메시지
+     - `branch` (문자열): 파일을 생성/업데이트할 브랜치
+     - `previous_path` (선택적 문자열): 이동/이름 변경할 파일의 경로
+   - 반환: 파일 내용 및 커밋 세부 정보
 
 2. `push_files`
-   - Push multiple files in a single commit
-   - Inputs:
-     - `project_id` (string): Project ID or URL-encoded path
-     - `branch` (string): Branch to push to
-     - `files` (array): Files to push, each with `file_path` and `content`
-     - `commit_message` (string): Commit message
-   - Returns: Updated branch reference
+   - 단일 커밋으로 여러 파일 푸시
+   - 입력:
+     - `project_id` (문자열): 프로젝트 ID 또는 URL 인코딩된 경로
+     - `branch` (문자열): 푸시할 브랜치
+     - `files` (배열): 푸시할 파일, 각각 `file_path`와 `content` 포함
+     - `commit_message` (문자열): 커밋 메시지
+   - 반환: 업데이트된 브랜치 참조
 
 3. `search_repositories`
-   - Search for GitLab projects
-   - Inputs:
-     - `search` (string): Search query
-     - `page` (optional number): Page number for pagination
-     - `per_page` (optional number): Results per page (default 20)
-   - Returns: Project search results
+   - GitLab 프로젝트 검색
+   - 입력:
+     - `search` (문자열): 검색 쿼리
+     - `page` (선택적 숫자): 페이지네이션을 위한 페이지 번호
+     - `per_page` (선택적 숫자): 페이지당 결과 수 (기본값 20)
+   - 반환: 프로젝트 검색 결과
 
 4. `create_repository`
-   - Create a new GitLab project
-   - Inputs:
-     - `name` (string): Project name
-     - `description` (optional string): Project description
-     - `visibility` (optional string): 'private', 'internal', or 'public'
-     - `initialize_with_readme` (optional boolean): Initialize with README
-   - Returns: Created project details
+   - 새 GitLab 프로젝트 생성
+   - 입력:
+     - `name` (문자열): 프로젝트 이름
+     - `description` (선택적 문자열): 프로젝트 설명
+     - `visibility` (선택적 문자열): 'private', 'internal', 또는 'public'
+     - `initialize_with_readme` (선택적 불리언): README로 초기화할지 여부
+   - 반환: 생성된 프로젝트 세부 정보
 
 5. `get_file_contents`
-   - Get contents of a file or directory
-   - Inputs:
-     - `project_id` (string): Project ID or URL-encoded path
-     - `file_path` (string): Path to file/directory
-     - `ref` (optional string): Branch/tag/commit to get contents from
-   - Returns: File/directory contents
+   - 파일 또는 디렉토리 내용 가져오기
+   - 입력:
+     - `project_id` (문자열): 프로젝트 ID 또는 URL 인코딩된 경로
+     - `file_path` (문자열): 파일/디렉토리 경로
+     - `ref` (선택적 문자열): 내용을 가져올 브랜치/태그/커밋
+   - 반환: 파일/디렉토리 내용
 
 6. `create_issue`
-   - Create a new issue
-   - Inputs:
-     - `project_id` (string): Project ID or URL-encoded path
-     - `title` (string): Issue title
-     - `description` (optional string): Issue description
-     - `assignee_ids` (optional number[]): User IDs to assign
-     - `labels` (optional string[]): Labels to add
-     - `milestone_id` (optional number): Milestone ID
-   - Returns: Created issue details
+   - 새 이슈 생성
+   - 입력:
+     - `project_id` (문자열): 프로젝트 ID 또는 URL 인코딩된 경로
+     - `title` (문자열): 이슈 제목
+     - `description` (선택적 문자열): 이슈 설명
+     - `assignee_ids` (선택적 숫자[]): 할당할 사용자 ID
+     - `labels` (선택적 문자열[]): 추가할 레이블
+     - `milestone_id` (선택적 숫자): 마일스톤 ID
+   - 반환: 생성된 이슈 세부 정보
 
 7. `create_merge_request`
-   - Create a new merge request
-   - Inputs:
-     - `project_id` (string): Project ID or URL-encoded path
-     - `title` (string): MR title
-     - `description` (optional string): MR description
-     - `source_branch` (string): Branch containing changes
-     - `target_branch` (string): Branch to merge into
-     - `draft` (optional boolean): Create as draft MR
-     - `allow_collaboration` (optional boolean): Allow commits from upstream members
-   - Returns: Created merge request details
+   - 새 병합 요청 생성
+   - 입력:
+     - `project_id` (문자열): 프로젝트 ID 또는 URL 인코딩된 경로
+     - `title` (문자열): MR 제목
+     - `description` (선택적 문자열): MR 설명
+     - `source_branch` (문자열): 변경 사항이 포함된 브랜치
+     - `target_branch` (문자열): 병합할 대상 브랜치
+     - `draft` (선택적 불리언): 초안 MR로 생성할지 여부
+     - `allow_collaboration` (선택적 불리언): 업스트림 멤버의 커밋 허용 여부
+   - 반환: 생성된 병합 요청 세부 정보
 
 8. `fork_repository`
-   - Fork a project
-   - Inputs:
-     - `project_id` (string): Project ID or URL-encoded path
-     - `namespace` (optional string): Namespace to fork to
-   - Returns: Forked project details
+   - 프로젝트 포크
+   - 입력:
+     - `project_id` (문자열): 프로젝트 ID 또는 URL 인코딩된 경로
+     - `namespace` (선택적 문자열): 포크할 네임스페이스
+   - 반환: 포크된 프로젝트 세부 정보
 
 9. `create_branch`
-   - Create a new branch
-   - Inputs:
-     - `project_id` (string): Project ID or URL-encoded path
-     - `branch` (string): Name for new branch
-     - `ref` (optional string): Source branch/commit for new branch
-   - Returns: Created branch reference
+   - 새 브랜치 생성
+   - 입력:
+     - `project_id` (문자열): 프로젝트 ID 또는 URL 인코딩된 경로
+     - `branch` (문자열): 새 브랜치 이름
+     - `ref` (선택적 문자열): 새 브랜치의 소스 브랜치/커밋
+   - 반환: 생성된 브랜치 참조
 
-## Setup
+## 설정
 
-### Personal Access Token
-[Create a GitLab Personal Access Token](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html) with appropriate permissions:
-   - Go to User Settings > Access Tokens in GitLab
-   - Select the required scopes:
-     - `api` for full API access
-     - `read_api` for read-only access
-     - `read_repository` and `write_repository` for repository operations
-   - Create the token and save it securely
+### 개인 액세스 토큰
+적절한 권한으로 [GitLab 개인 액세스 토큰 생성](https://docs.gitlab.com/ee/user/profile/personal_access_tokens.html):
+   - GitLab에서 사용자 설정 > 액세스 토큰으로 이동
+   - 필요한 범위 선택:
+     - 전체 API 액세스를 위한 `api`
+     - 읽기 전용 액세스를 위한 `read_api`
+     - 저장소 작업을 위한 `read_repository` 및 `write_repository`
+   - 토큰을 생성하고 안전하게 저장
 
-### Usage with Claude Desktop
-Add the following to your `claude_desktop_config.json`:
+### Claude Desktop에서 사용
+`claude_desktop_config.json`에 다음을 추가하세요:
 
 #### Docker
 ```json
@@ -127,7 +127,7 @@ Add the following to your `claude_desktop_config.json`:
       ],
       "env": {
         "GITLAB_PERSONAL_ACCESS_TOKEN": "<YOUR_TOKEN>",
-        "GITLAB_API_URL": "https://gitlab.com/api/v4" // Optional, for self-hosted instances
+        "GITLAB_API_URL": "https://gitlab.com/api/v4" // 선택 사항, 자체 호스팅 인스턴스용
       }
     }
   }
@@ -147,26 +147,26 @@ Add the following to your `claude_desktop_config.json`:
       ],
       "env": {
         "GITLAB_PERSONAL_ACCESS_TOKEN": "<YOUR_TOKEN>",
-        "GITLAB_API_URL": "https://gitlab.com/api/v4" // Optional, for self-hosted instances
+        "GITLAB_API_URL": "https://gitlab.com/api/v4" // 선택 사항, 자체 호스팅 인스턴스용
       }
     }
   }
 }
 ```
 
-## Build
+## 빌드
 
-Docker build:
+Docker 빌드:
 
 ```bash
 docker build -t vonwig/gitlab:mcp -f src/gitlab/Dockerfile .
 ```
 
-## Environment Variables
+## 환경 변수
 
-- `GITLAB_PERSONAL_ACCESS_TOKEN`: Your GitLab personal access token (required)
-- `GITLAB_API_URL`: Base URL for GitLab API (optional, defaults to `https://gitlab.com/api/v4`)
+- `GITLAB_PERSONAL_ACCESS_TOKEN`: GitLab 개인 액세스 토큰 (필수)
+- `GITLAB_API_URL`: GitLab API의 기본 URL (선택 사항, 기본값: `https://gitlab.com/api/v4`)
 
-## License
+## 라이선스
 
-This MCP server is licensed under the MIT License. This means you are free to use, modify, and distribute the software, subject to the terms and conditions of the MIT License. For more details, please see the LICENSE file in the project repository.
+이 MCP 서버는 MIT 라이선스 하에 제공됩니다. 이는 MIT 라이선스의 약관 및 조건에 따라 소프트웨어를 자유롭게 사용, 수정 및 배포할 수 있음을 의미합니다. 자세한 내용은 프로젝트 저장소의 LICENSE 파일을 참조하세요.

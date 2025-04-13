@@ -1,55 +1,55 @@
-# Fetch MCP Server
+# Fetch MCP 서버
 
-A Model Context Protocol server that provides web content fetching capabilities. This server enables LLMs to retrieve and process content from web pages, converting HTML to markdown for easier consumption.
+웹 콘텐츠 가져오기 기능을 제공하는 모델 컨텍스트 프로토콜 서버입니다. 이 서버는 LLM이 웹 페이지에서 콘텐츠를 검색하고 처리할 수 있게 하며, 더 쉬운 소비를 위해 HTML을 마크다운으로 변환합니다.
 
-The fetch tool will truncate the response, but by using the `start_index` argument, you can specify where to start the content extraction. This lets models read a webpage in chunks, until they find the information they need.
+fetch 도구는 응답을 잘라내지만, `start_index` 인자를 사용하여 콘텐츠 추출을 시작할 위치를 지정할 수 있습니다. 이를 통해 모델은 필요한 정보를 찾을 때까지 웹페이지를 청크 단위로 읽을 수 있습니다.
 
-### Available Tools
+### 사용 가능한 도구
 
-- `fetch` - Fetches a URL from the internet and extracts its contents as markdown.
-    - `url` (string, required): URL to fetch
-    - `max_length` (integer, optional): Maximum number of characters to return (default: 5000)
-    - `start_index` (integer, optional): Start content from this character index (default: 0)
-    - `raw` (boolean, optional): Get raw content without markdown conversion (default: false)
+- `fetch` - 인터넷에서 URL을 가져와 그 내용을 마크다운으로 추출합니다.
+    - `url` (문자열, 필수): 가져올 URL
+    - `max_length` (정수, 선택사항): 반환할 최대 문자 수 (기본값: 5000)
+    - `start_index` (정수, 선택사항): 이 문자 인덱스부터 콘텐츠 시작 (기본값: 0)
+    - `raw` (불리언, 선택사항): 마크다운 변환 없이 원시 콘텐츠 가져오기 (기본값: false)
 
-### Prompts
+### 프롬프트
 
 - **fetch**
-  - Fetch a URL and extract its contents as markdown
-  - Arguments:
-    - `url` (string, required): URL to fetch
+  - URL을 가져와 그 내용을 마크다운으로 추출
+  - 인자:
+    - `url` (문자열, 필수): 가져올 URL
 
-## Installation
+## 설치
 
-Optionally: Install node.js, this will cause the fetch server to use a different HTML simplifier that is more robust.
+선택 사항: node.js를 설치하면 fetch 서버가 더 강력한 HTML 단순화 도구를 사용하게 됩니다.
 
-### Using uv (recommended)
+### uv 사용 (권장)
 
-When using [`uv`](https://docs.astral.sh/uv/) no specific installation is needed. We will
-use [`uvx`](https://docs.astral.sh/uv/guides/tools/) to directly run *mcp-server-fetch*.
+[`uv`](https://docs.astral.sh/uv/)를 사용할 때는 특별한 설치가 필요하지 않습니다. 
+[`uvx`](https://docs.astral.sh/uv/guides/tools/)를 사용하여 *mcp-server-fetch*를 직접 실행할 것입니다.
 
-### Using PIP
+### PIP 사용
 
-Alternatively you can install `mcp-server-fetch` via pip:
+또는 pip를 통해 `mcp-server-fetch`를 설치할 수 있습니다:
 
 ```
 pip install mcp-server-fetch
 ```
 
-After installation, you can run it as a script using:
+설치 후, 다음과 같이 스크립트로 실행할 수 있습니다:
 
 ```
 python -m mcp_server_fetch
 ```
 
-## Configuration
+## 구성
 
-### Configure for Claude.app
+### Claude.app 설정
 
-Add to your Claude settings:
+Claude 설정에 추가하세요:
 
 <details>
-<summary>Using uvx</summary>
+<summary>uvx 사용</summary>
 
 ```json
 "mcpServers": {
@@ -62,7 +62,7 @@ Add to your Claude settings:
 </details>
 
 <details>
-<summary>Using docker</summary>
+<summary>docker 사용</summary>
 
 ```json
 "mcpServers": {
@@ -75,7 +75,7 @@ Add to your Claude settings:
 </details>
 
 <details>
-<summary>Using pip installation</summary>
+<summary>pip 설치 사용</summary>
 
 ```json
 "mcpServers": {
@@ -87,54 +87,51 @@ Add to your Claude settings:
 ```
 </details>
 
-### Customization - robots.txt
+### 사용자 지정 - robots.txt
 
-By default, the server will obey a websites robots.txt file if the request came from the model (via a tool), but not if
-the request was user initiated (via a prompt). This can be disabled by adding the argument `--ignore-robots-txt` to the
-`args` list in the configuration.
+기본적으로 서버는 요청이 모델(도구를 통해)에서 온 경우 웹사이트의 robots.txt 파일을 준수하지만, 요청이 사용자 시작(프롬프트를 통해)된 경우에는 준수하지 않습니다. 구성의 `args` 목록에 `--ignore-robots-txt` 인자를 추가하여 이 기능을 비활성화할 수 있습니다.
 
-### Customization - User-agent
+### 사용자 지정 - User-agent
 
-By default, depending on if the request came from the model (via a tool), or was user initiated (via a prompt), the
-server will use either the user-agent
+기본적으로 요청이 모델(도구를 통해)에서 왔는지 또는 사용자 시작(프롬프트를 통해)되었는지에 따라 서버는 다음 user-agent 중 하나를 사용합니다.
 ```
 ModelContextProtocol/1.0 (Autonomous; +https://github.com/modelcontextprotocol/servers)
 ```
-or
+또는
 ```
 ModelContextProtocol/1.0 (User-Specified; +https://github.com/modelcontextprotocol/servers)
 ```
 
-This can be customized by adding the argument `--user-agent=YourUserAgent` to the `args` list in the configuration.
+구성의 `args` 목록에 `--user-agent=YourUserAgent` 인자를 추가하여 이를 사용자 지정할 수 있습니다.
 
-### Customization - Proxy
+### 사용자 지정 - 프록시
 
-The server can be configured to use a proxy by using the `--proxy-url` argument.
+`--proxy-url` 인자를 사용하여 서버가 프록시를 사용하도록 구성할 수 있습니다.
 
-## Debugging
+## 디버깅
 
-You can use the MCP inspector to debug the server. For uvx installations:
+MCP 인스펙터를 사용하여 서버를 디버깅할 수 있습니다. uvx 설치의 경우:
 
 ```
 npx @modelcontextprotocol/inspector uvx mcp-server-fetch
 ```
 
-Or if you've installed the package in a specific directory or are developing on it:
+또는 특정 디렉토리에 패키지를 설치했거나 개발 중인 경우:
 
 ```
 cd path/to/servers/src/fetch
 npx @modelcontextprotocol/inspector uv run mcp-server-fetch
 ```
 
-## Contributing
+## 기여하기
 
-We encourage contributions to help expand and improve mcp-server-fetch. Whether you want to add new tools, enhance existing functionality, or improve documentation, your input is valuable.
+mcp-server-fetch를 확장하고 개선하는 데 도움이 되는 기여를 권장합니다. 새로운 도구를 추가하거나, 기존 기능을 향상시키거나, 문서를 개선하고 싶다면 여러분의 의견은 소중합니다.
 
-For examples of other MCP servers and implementation patterns, see:
+다른 MCP 서버 및 구현 패턴의 예는 다음에서 확인할 수 있습니다:
 https://github.com/modelcontextprotocol/servers
 
-Pull requests are welcome! Feel free to contribute new ideas, bug fixes, or enhancements to make mcp-server-fetch even more powerful and useful.
+풀 리퀘스트를 환영합니다! mcp-server-fetch를 더욱 강력하고 유용하게 만들기 위한 새로운 아이디어, 버그 수정 또는 개선 사항을 자유롭게 기여해 주세요.
 
-## License
+## 라이선스
 
-mcp-server-fetch is licensed under the MIT License. This means you are free to use, modify, and distribute the software, subject to the terms and conditions of the MIT License. For more details, please see the LICENSE file in the project repository.
+mcp-server-fetch는 MIT 라이선스 하에 제공됩니다. 이는 MIT 라이선스의 약관 및 조건에 따라 소프트웨어를 자유롭게 사용, 수정 및 배포할 수 있음을 의미합니다. 자세한 내용은 프로젝트 저장소의 LICENSE 파일을 참조하세요.

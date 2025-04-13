@@ -1,24 +1,31 @@
-FROM node:22.12-alpine AS builder
-
-COPY src/postgres /app
-COPY tsconfig.json /tsconfig.json
+FROM node:20.14-slim AS build
 
 WORKDIR /app
 
-RUN --mount=type=cache,target=/root/.npm npm install
+# 프로젝트 파일 복사
+COPY ./src/postgres/package*.json ./
+COPY ./src/postgres/tsconfig.json ./
 
-RUN --mount=type=cache,target=/root/.npm-production npm ci --ignore-scripts --omit-dev
+# 의존성 설치
+RUN npm install
 
-FROM node:22-alpine AS release
+# 소스 파일 복사
+COPY ./src/postgres/src ./src
 
-COPY --from=builder /app/dist /app/dist
-COPY --from=builder /app/package.json /app/package.json
-COPY --from=builder /app/package-lock.json /app/package-lock.json
+# TypeScript 컴파일
+RUN npm run build
 
-ENV NODE_ENV=production
+FROM node:20.14-slim AS runner
 
 WORKDIR /app
 
-RUN npm ci --ignore-scripts --omit-dev
+# 빌드된 파일과 필요한 종속성 복사
+COPY --from=build /app/package*.json ./
+COPY --from=build /app/dist ./dist
+COPY --from=build /app/node_modules ./node_modules
 
-ENTRYPOINT ["node", "dist/index.js"]
+ENV PORT=3000
+
+EXPOSE ${PORT}
+
+CMD ["node", "dist/src/index.js"]
